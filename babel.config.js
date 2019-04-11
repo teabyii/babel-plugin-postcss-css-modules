@@ -11,6 +11,13 @@ module.exports = function (api) {
           }
         }
       ]
-    ]
+    ],
+    env: {
+      coverage: {
+        plugins: [
+          'istanbul'
+        ]
+      }
+    }
   }
 }
