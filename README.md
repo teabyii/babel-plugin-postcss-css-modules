@@ -26,7 +26,7 @@ Forked from: [babel-plugin-transform-postcss][transform-postcss]
 
 And Why: https://github.com/wbyoung/babel-plugin-transform-postcss/issues/89  
 
-Yes, I need to keep `import/requre` declaration in some case when I make public components on npm which is used in project with [create-react-app][create-react-app]. Thanks to [babel-plugin-transform-postcss][transform-postcss].
+Yes, I need to keep `import/require` declaration in some case when I make public components on npm which is used in project with [create-react-app][create-react-app]. Thanks to [babel-plugin-transform-postcss][transform-postcss].
 
 ## Usage
 

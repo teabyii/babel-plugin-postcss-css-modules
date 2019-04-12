@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-postcss-css-modules",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "prepublish": "yarn build",
     "build": "babel src -d lib --source-maps",
