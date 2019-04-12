@@ -18,7 +18,7 @@ import {
 import { expect } from 'chai'
 
 import path, { join } from 'path'
-import fs from 'fs'
+import fs from 'fs-extra'
 import net, { Server } from 'net'
 
 const testSocket = join(__dirname, 'tmp.sock')
@@ -109,6 +109,23 @@ describe('postcss-server', () => {
       })
 
       expect(JSON.parse(response)).to.eql({ simple: '_simple_jvai8_1' })
+    })
+
+    it('output css files', async () => {
+      const response = await sendMessage({
+        cssFile: simpleCSSFile,
+        opts: {
+          from: './',
+          to: '../output/'
+        }
+      })
+
+      expect(JSON.parse(response)).to.eql({ simple: '_simple_jvai8_1' })
+      expect(
+        await fs.readFile(path.resolve(__dirname, './output/simple.css'), { encoding: 'utf8' })
+      ).to.eql(
+        await fs.readFile(path.resolve(__dirname, './output/simple.expected.css'), { encoding: 'utf8' })
+      )
     })
 
     it('fails gracefully for invalid CSS', async () => {

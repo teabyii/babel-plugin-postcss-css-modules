@@ -1,6 +1,6 @@
 import net from 'net'
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs-extra'
+import path, { isAbsolute } from 'path'
 import util from 'util'
 import crypto from 'crypto'
 import makeDebug from 'debug'
@@ -23,6 +23,22 @@ const error = (...args) => {
   streams.stderr.write(`${prefix}${message}\n`)
 }
 
+async function outputCSS (code, file, root, from, to) {
+  if (!from || !to) return
+
+  let outputPath = to
+  if (!isAbsolute(outputPath)) {
+    outputPath = path.resolve(root, to)
+  }
+  let sourcePath = from
+  if (!isAbsolute(sourcePath)) {
+    sourcePath = path.resolve(root, from)
+  }
+  const relativePath = path.relative(sourcePath, file)
+  // console.log(path.resolve(outputPath, relativePath))
+  return fs.outputFile(path.resolve(outputPath, relativePath), code)
+}
+
 const main = async function main (socketPath, tmpPath) {
   try {
     fs.mkdirSync(tmpPath)
@@ -43,7 +59,8 @@ const main = async function main (socketPath, tmpPath) {
     connection.on('end', async () => {
       try {
         let tokens, cache
-        const { cssFile, config } = JSON.parse(data)
+        const { cssFile, config, opts } = JSON.parse(data)
+        const { from, to } = opts || {}
         const cachePath =
           `${path.join(tmpPath, cssFile.replace(/[^a-z]/ig, ''))}.cache`
         const source = // eslint-disable-next-line no-sync
@@ -57,9 +74,15 @@ const main = async function main (socketPath, tmpPath) {
           }
         }
 
+        let configPath = path.dirname(cssFile)
+
+        if (config) {
+          configPath = path.resolve(config)
+        }
+
         if (cache && cache.hash === hash) {
           connection.end(JSON.stringify(cache.tokens))
-
+          await outputCSS(cache.code, cssFile, config, from, to)
           return
         }
 
@@ -67,25 +90,23 @@ const main = async function main (socketPath, tmpPath) {
           tokens = resultTokens
         }
 
-        let configPath = path.dirname(cssFile)
-
-        if (config) {
-          configPath = path.resolve(config)
-        }
-
         const { plugins, options: postcssOpts } =
           await loadConfig({ extractModules }, configPath)
 
         const runner = postcss(plugins)
 
-        await runner.process(source, Object.assign({
+        const code = await runner.process(source, Object.assign({
           from: cssFile,
           to: cssFile // eslint-disable-line id-length
         }, postcssOpts))
 
+        // output css files
+        await outputCSS(code.css, cssFile, configPath, from, to)
+
         cache = {
           hash,
-          tokens
+          tokens,
+          code: code.css
         }
 
         // eslint-disable-next-line no-sync

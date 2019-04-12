@@ -55,7 +55,8 @@ const getStylesFromStylesheet = (
   stylesheetPath,
   file,
   config,
-  configExtensions
+  configExtensions,
+  opts
 ) => {
   const stylesheetExtension = extname(stylesheetPath)
 
@@ -67,7 +68,7 @@ const getStylesFromStylesheet = (
     launchServer()
     const requiringFile = file.opts.filename
     const cssFile = resolve(dirname(requiringFile), stylesheetPath)
-    const data = JSON.stringify({ cssFile, config })
+    const data = JSON.stringify({ cssFile, config, opts })
     const execArgs = [clientExcutable, socketPath, data]
     const result = execFileSync(nodeExecutable, execArgs, {
       env: process.env // eslint-disable-line no-process-env
@@ -97,7 +98,8 @@ export default function transformPostCSS ({ types: t }) {
           stylesheetPath,
           file,
           config,
-          extensions
+          extensions,
+          opts
         )
 
         if (tokens !== undefined) {
@@ -138,7 +140,8 @@ export default function transformPostCSS ({ types: t }) {
           stylesheetPath,
           file,
           config,
-          extensions
+          extensions,
+          opts
         )
 
         if (tokens) {

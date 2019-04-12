@@ -70,13 +70,15 @@ You can also specify a location to load your `postcss.config.js` from in the opt
   "plugins": [
     ["postcss-css-modules", {
       "config": "configuration/postcss.config.js",
-      "keep": true
+      "keep": true,
+      "from": "./src",
+      "to": "./dist"
     }]
   ]
 }
 ```
 
-Use `"keep": true` to keep `import/require` declaration.
+Use `"keep": true` to keep `import/require` declaration. `from & to` should be given when need to output relatived css file.
 
 By default we look for `.css` files, but you can also specify the extensions we should look for:
 ```json
@@ -96,9 +98,9 @@ The transform will transform all imports & require statements that have a `.css`
 
 No CSS is actually included in the resulting JavaScript. 
 
-I recommend to use `"keep": true` in this plugin's options to keep `import/requre` declaration that your webpack can also bundle css file easily. 
+I recommend to use `"keep": true` in this plugin's options to keep `import/requre` declaration that your webpack can also bundle css file easily. However, webpack also should handle css file transform with the same `postcss.config.js`.
 
-> Notes: Without webpack, when you just use babel-cli with this plugin, you should extra copy css files to the babel output path.
+> Notes: Without webpack, when you just use babel-cli with this plugin, you should set form & to options to make sure css file output.
 
 Without `"keep": true`, It is expected that you transform your CSS using the same `postcss.config.js` file as the one used by this transform.
 

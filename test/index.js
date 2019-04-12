@@ -69,7 +69,7 @@ describe('babel-plugin-transform-postcss', () => {
     expect(jsExecutable).to.endWith('/postcss-client.js')
     expect(socketPath).to.match(/^\/tmp.*\.sock$/)
     expect(cssFile).to.endWith(`/${filename}`)
-    expect(json).to.have.keys('cssFile', 'config')
+    expect(json).to.have.keys('cssFile', 'config', 'opts')
     expect(opts).to.eql({
       env: process.env // eslint-disable-line no-process-env
     })
@@ -102,7 +102,7 @@ describe('babel-plugin-transform-postcss', () => {
     shouldBehaveLikeSeverIsRunning()
   })
 
-  describe('when transforming require.js keep css', () => {
+  describe('when transforming require.js & keep declaration', () => {
     let result
 
     beforeEach(async () => { result = await transform('require.js', undefined, undefined, { keep: true }) })
@@ -130,7 +130,7 @@ describe('babel-plugin-transform-postcss', () => {
     shouldBehaveLikeSeverIsRunning()
   })
 
-  describe('when transforming import.js keep css', () => {
+  describe('when transforming import.js & keep declaration', () => {
     let result
 
     beforeEach(async () => { result = await transform('import.js', undefined, undefined, { keep: true }) })

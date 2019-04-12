@@ -5,15 +5,23 @@
     "prepublish": "yarn build",
     "build": "babel src -d lib --source-maps",
     "lint": "standard --fix",
-    "test": "BABEL_ENV=coverage nyc mocha"
+    "test": "BABEL_ENV=coverage nyc mocha",
+    "mocha": "mocha"
   },
-  "keywords": ["babel", "babel-plugin", "css-modules", "postcss", "transform"],
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "css-modules",
+    "postcss",
+    "transform"
+  ],
   "description": "For css modules by babel & postcss",
   "main": "lib/index.js",
   "repository": "git@github.com:teabyii/babel-plugin-postcss-css-modules",
   "author": "teabyii <teabyii@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "fs-extra": "^7.0.1",
     "postcss": "^7.0.14",
     "postcss-load-config": "^2.0.0",
     "postcss-modules": "^1.4.1",
