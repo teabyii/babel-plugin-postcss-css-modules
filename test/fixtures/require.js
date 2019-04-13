@@ -1,1 +1,1 @@
-var styles = require('./simple.css')
+const styles = require('./simple.css')

@@ -23,7 +23,7 @@ const error = (...args) => {
   streams.stderr.write(`${prefix}${message}\n`)
 }
 
-async function outputCSS (code, file, root, from, to) {
+async function outputCSS (code, file, root = process.cwd(), from, to) {
   if (!from || !to) return
 
   let outputPath = to
@@ -35,7 +35,6 @@ async function outputCSS (code, file, root, from, to) {
     sourcePath = path.resolve(root, from)
   }
   const relativePath = path.relative(sourcePath, file)
-  // console.log(path.resolve(outputPath, relativePath))
   return fs.outputFile(path.resolve(outputPath, relativePath), code)
 }
 
@@ -60,7 +59,7 @@ const main = async function main (socketPath, tmpPath) {
       try {
         let tokens, cache
         const { cssFile, config, opts } = JSON.parse(data)
-        const { from, to } = opts || {}
+        const { from, to, root } = opts || {}
         const cachePath =
           `${path.join(tmpPath, cssFile.replace(/[^a-z]/ig, ''))}.cache`
         const source = // eslint-disable-next-line no-sync
@@ -82,7 +81,7 @@ const main = async function main (socketPath, tmpPath) {
 
         if (cache && cache.hash === hash) {
           connection.end(JSON.stringify(cache.tokens))
-          await outputCSS(cache.code, cssFile, config, from, to)
+          await outputCSS(cache.code, cssFile, root, from, to)
           return
         }
 
@@ -101,7 +100,7 @@ const main = async function main (socketPath, tmpPath) {
         }, postcssOpts))
 
         // output css files
-        await outputCSS(code.css, cssFile, configPath, from, to)
+        await outputCSS(code.css, cssFile, root, from, to)
 
         cache = {
           hash,

@@ -115,8 +115,8 @@ describe('postcss-server', () => {
       const response = await sendMessage({
         cssFile: simpleCSSFile,
         opts: {
-          from: './',
-          to: '../output/'
+          from: './test/fixtures/',
+          to: './test/output'
         }
       })
 

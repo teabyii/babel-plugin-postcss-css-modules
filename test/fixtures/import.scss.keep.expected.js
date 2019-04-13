@@ -1,6 +1,6 @@
 import './simple.scss'
 
-var styles = {
+const styles = {
   'simple': '_simple_jvai8_1'
 }
 

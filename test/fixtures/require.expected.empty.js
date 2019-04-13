@@ -1,1 +1,1 @@
-var styles = {}; // @related-file ./simple.css
+const styles = {}; // @related-file ./simple.css

@@ -1,4 +1,4 @@
-var stringHash = require('string-hash')
+const stringHash = require('string-hash')
 
 module.exports = (ctx) => ({
   plugins: [

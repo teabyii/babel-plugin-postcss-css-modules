@@ -72,13 +72,13 @@ You can also specify a location to load your `postcss.config.js` from in the opt
       "config": "configuration/postcss.config.js",
       "keep": true,
       "from": "./src",
-      "to": "./dist"
+      "to": "./dist",
     }]
   ]
 }
 ```
 
-Use `"keep": true` to keep `import/require` declaration. `from & to` should be given when need to output relatived css file.
+Use `"keep": true` to keep `import/require` declaration. `from & to` should be given when need to output css file, they can be absolute path or relative path with `root` (default to `process.cwd()`).
 
 By default we look for `.css` files, but you can also specify the extensions we should look for:
 ```json

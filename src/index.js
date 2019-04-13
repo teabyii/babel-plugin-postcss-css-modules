@@ -14,9 +14,9 @@ import {
 // instead of using os.tmpdir (which can, on platforms like darwin, be quite
 // long & per-process).
 const projectId = process.cwd().toLowerCase().replace(/[^a-z]/ig, '')
-const socketName = `bptp-${projectId}.sock`
+const socketName = `bppcm-${projectId}.sock`
 const socketPath = join('/tmp', socketName)
-const tmpPath = join('/tmp', `bptp-${projectId}`)
+const tmpPath = join('/tmp', `bppcm-${projectId}`)
 
 const nodeExecutable = process.argv[0]
 const clientExcutable = join(__dirname, 'postcss-client.js')
@@ -155,7 +155,7 @@ export default function transformPostCSS ({ types: t }) {
           )
           /* eslint-disable new-cap */
 
-          const variableDeclaration = t.VariableDeclaration('var',
+          const variableDeclaration = t.VariableDeclaration('const',
             [t.VariableDeclarator(path.node.specifiers[0].local, styles)])
 
           path.replaceWith(variableDeclaration)
