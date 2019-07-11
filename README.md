@@ -72,7 +72,7 @@ You can also specify a location to load your `postcss.config.js` from in the opt
       "config": "configuration/postcss.config.js",
       "keep": true,
       "from": "./src",
-      "to": "./dist",
+      "to": "./dist", // support multi target, just ['./dist', './build']
     }]
   ]
 }

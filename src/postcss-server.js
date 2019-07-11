@@ -26,16 +26,14 @@ const error = (...args) => {
 async function outputCSS (code, file, root = process.cwd(), from, to) {
   if (!from || !to) return
 
-  let outputPath = to
-  if (!isAbsolute(outputPath)) {
-    outputPath = path.resolve(root, to)
-  }
+  let outputPaths = Array.isArray(to) ? to : [to]
+  outputPaths = outputPaths.map(n => isAbsolute(n) ? n : path.resolve(root, n))
   let sourcePath = from
   if (!isAbsolute(sourcePath)) {
     sourcePath = path.resolve(root, from)
   }
   const relativePath = path.relative(sourcePath, file)
-  return fs.outputFile(path.resolve(outputPath, relativePath), code)
+  return Promise.all(outputPaths.map(n => fs.outputFile(path.resolve(n, relativePath), code)))
 }
 
 const main = async function main (socketPath, tmpPath) {
