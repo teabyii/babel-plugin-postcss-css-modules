@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "fs-extra": "^7.0.1",
-    "postcss": "^7.0.14",
+    "postcss": "^8.2.10",
     "postcss-load-config": "^2.0.0",
     "postcss-modules": "^1.4.1",
     "string-hash": "^1.1.3"
